@@ -10,25 +10,36 @@ YYYY-MM-DD
 
 ## Current Phase
 
-Phase 2 — Git Repository
+Phase 4 — Backend Foundation
 
 ## Current Task
 
-Initialize Git repository, configure .gitignore, create initial commit, and connect to GitHub.
+Scaffold NestJS backend application in `backend/`, understand architecture (Modules, Controllers, Services, Dependency Injection), and create the `/api/health` endpoint.
 
 ## Completed This Session
 
-- Created project documentation structure.
-- Defined project goal, technology stack, and production architecture.
-- Mastered Phase 0 architecture concepts and request flows.
-- Completed Phase 1: Verified Node.js (v24.15.0), npm (11.12.1), and Git (v2.53.0). Docker deferred to Phase 5.
+- Mastered Phase 0: Architecture, request flows, transaction atomicity.
+- Completed Phase 1: Environment verification (Node.js v24.15, npm 11.12, Git 2.53).
+- Completed Phase 2: Git repository, `.gitignore`, initial commit, and GitHub push.
+- Completed Phase 3: Frontend Foundation:
+  - Scaffolded React + TypeScript + Vite project in `frontend/`.
+  - Configured Tailwind CSS v4 with `@tailwindcss/vite`.
+  - Built typed `<ProductCard />` component with derived state for low-stock thresholds.
+  - Implemented `<AddProductModal />` with controlled inputs, validation, and `e.preventDefault()`.
+  - Implemented multi-page client-side routing with `react-router-dom`:
+    - Persistent `<Layout />` with navigation `<NavLink>` elements and `<Outlet />`.
+    - `DashboardPage` with real-time metrics (`totalProducts`, `totalValue`, `lowStockItems`).
+    - `ProductsPage` with product catalog and modal integration.
+    - `InventoryPage` with status table.
+    - `OrdersPage` placeholder.
 
 ## What I Learned
 
-- Node.js executes JavaScript/TypeScript on the server and runs build tooling.
-- npm manages packages and dependencies.
-- Git tracks history and changes locally.
-- Docker containers will run PostgreSQL in Phase 5 without cluttering native Windows OS.
+- Controlled Components in React: React state is the single source of truth for input values.
+- `e.preventDefault()` prevents native browser page reloads on form submissions.
+- TypeScript `Omit<Product, 'id'>` avoids redundant interface declarations.
+- Client-side routing with React Router enables real browser URLs, history navigation, and persistent layouts without page refreshes.
+- Derived state calculations (`.reduce()`, `.filter()`) keep metrics reactive without storing out-of-sync duplicate state.
 
 ## Current Problems
 
@@ -36,10 +47,11 @@ None.
 
 ## Next Task
 
-Phase 2:
-1. Understand git init, git status, git add, git commit.
-2. Create .gitignore before committing anything.
-3. Make initial commit and establish conventional commit messages.
+Phase 4: Backend Foundation
+1. Make a Git commit for Phase 3 frontend foundation.
+2. Scaffold NestJS backend in `backend/`.
+3. Learn NestJS architecture: Modules, Controllers, Services, and Dependency Injection.
+4. Implement `/api/health` endpoint.
 
 ## Instructions For Next AI Session
 

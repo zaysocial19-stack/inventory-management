@@ -151,10 +151,10 @@ I should understand the system from browser -> HTTP -> Nginx -> NestJS -> Prisma
 
 ## Current Status
 
-- Current phase: Phase 2
-- Current task: Initialize and configure Git repository
-- Last completed task: Verified local environment (Node v24.15, npm 11.12, Git 2.53)
-- Next task: Learn git init, .gitignore, initial commit, GitHub remote
+- Current phase: Phase 4
+- Current task: Create NestJS backend foundation and understand backend architecture
+- Last completed task: Completed Phase 3 (React + TypeScript + Vite + Tailwind + Router + Dashboard + Forms)
+- Next task: Scaffold NestJS project, understand modules/controllers/services/DI, create /api/health endpoint
 
 ## Important Decisions
 
