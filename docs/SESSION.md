@@ -6,52 +6,61 @@ Update it at the end of meaningful sessions.
 
 ## Date
 
-YYYY-MM-DD
+2026-10-05
 
 ## Current Phase
 
-Phase 4 — Backend Foundation
+Phase 5 — PostgreSQL & Relational Database Design
 
 ## Current Task
 
-Scaffold NestJS backend application in `backend/`, understand architecture (Modules, Controllers, Services, Dependency Injection), and create the `/api/health` endpoint.
+Design the complete Entity-Relationship (ER) diagram for our 9 core business entities before database implementation.
 
 ## Completed This Session
 
-- Mastered Phase 0: Architecture, request flows, transaction atomicity.
-- Completed Phase 1: Environment verification (Node.js v24.15, npm 11.12, Git 2.53).
-- Completed Phase 2: Git repository, `.gitignore`, initial commit, and GitHub push.
-- Completed Phase 3: Frontend Foundation:
+- Mastered Phase 0: System architecture, request flows, transaction atomicity, client vs. server boundaries.
+- Completed Phase 1: Verified Node.js (v24.15), npm (11.12), Git (v2.53).
+- Completed Phase 2: Git repository initialized, `.gitignore` created, root commit pushed to GitHub.
+- Completed Phase 3 (Frontend Foundation):
   - Scaffolded React + TypeScript + Vite project in `frontend/`.
   - Configured Tailwind CSS v4 with `@tailwindcss/vite`.
-  - Built typed `<ProductCard />` component with derived state for low-stock thresholds.
+  - Built typed `<ProductCard />` component with derived low-stock alerts.
   - Implemented `<AddProductModal />` with controlled inputs, validation, and `e.preventDefault()`.
-  - Implemented multi-page client-side routing with `react-router-dom`:
-    - Persistent `<Layout />` with navigation `<NavLink>` elements and `<Outlet />`.
-    - `DashboardPage` with real-time metrics (`totalProducts`, `totalValue`, `lowStockItems`).
-    - `ProductsPage` with product catalog and modal integration.
-    - `InventoryPage` with status table.
-    - `OrdersPage` placeholder.
+  - Implemented multi-page routing with `react-router-dom` (`/`, `/products`, `/inventory`, `/orders`).
+  - Created `DashboardPage` with calculated metrics and restock alerts.
+- Completed Phase 4 (Backend Foundation):
+  - Scaffolded NestJS application in `backend/` with CommonJS and strict TypeScript.
+  - Mastered NestJS architecture: Modules, Controllers, Services, Dependency Injection.
+  - Configured global prefix `/api` and CORS for `http://localhost:5173`.
+  - Configured global `ValidationPipe` with payload whitelisting.
+  - Implemented interactive Swagger/OpenAPI documentation at `http://localhost:3000/api/docs`.
+  - Implemented live health check endpoint `GET /api/health`.
+  - Pushed all frontend and backend commits to GitHub.
 
 ## What I Learned
 
-- Controlled Components in React: React state is the single source of truth for input values.
-- `e.preventDefault()` prevents native browser page reloads on form submissions.
-- TypeScript `Omit<Product, 'id'>` avoids redundant interface declarations.
-- Client-side routing with React Router enables real browser URLs, history navigation, and persistent layouts without page refreshes.
-- Derived state calculations (`.reduce()`, `.filter()`) keep metrics reactive without storing out-of-sync duplicate state.
+- NestJS Dependency Injection: Controllers declare their service dependencies in their constructor, and NestJS automatically instantiates and injects them.
+- Global Prefix `/api` guarantees all endpoints align with Nginx reverse proxy routing.
+- CORS must be enabled when the frontend (`:5173`) and backend (`:3000`) run on different ports.
+- In VS Code, the letter `U` on tabs means "Untracked by Git", not unsaved.
+- Swagger provides self-documenting, interactive API exploration and testing out-of-the-box.
 
 ## Current Problems
 
-None.
+None. All systems operational.
 
-## Next Task
+## Next Task (When Resuming)
 
-Phase 4: Backend Foundation
-1. Make a Git commit for Phase 3 frontend foundation.
-2. Scaffold NestJS backend in `backend/`.
-3. Learn NestJS architecture: Modules, Controllers, Services, and Dependency Injection.
-4. Implement `/api/health` endpoint.
+1. Begin Phase 5 — PostgreSQL:
+   - Learn relational database fundamentals (tables, primary keys, foreign keys, relationships, constraints, indexes).
+   - Design the Entity-Relationship (ER) diagram for:
+     1. User & Role (RBAC)
+     2. Product & Category
+     3. Supplier & Product relationship
+     4. Inventory & StockMovement (audit log)
+     5. Order & OrderItem
+   - Document the ER diagram in `docs/DATABASE.md`.
+   - Set up PostgreSQL and initialize Prisma schema.
 
 ## Instructions For Next AI Session
 
