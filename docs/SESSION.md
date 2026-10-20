@@ -6,15 +6,15 @@ Update it at the end of meaningful sessions.
 
 ## Date
 
-2026-10-05
+2026-10-20
 
 ## Current Phase
 
-Phase 5 — PostgreSQL & Relational Database Design
+Phase 5 COMPLETE ➔ Moving to Phase 6 — Connect Backend to Database
 
 ## Current Task
 
-Design the complete Entity-Relationship (ER) diagram for our 9 core business entities before database implementation.
+Completed Phase 5 PostgreSQL and Prisma setup. Ready to begin Phase 6: create Prisma module/service in NestJS and implement Products CRUD.
 
 ## Completed This Session
 
@@ -35,32 +35,33 @@ Design the complete Entity-Relationship (ER) diagram for our 9 core business ent
   - Configured global `ValidationPipe` with payload whitelisting.
   - Implemented interactive Swagger/OpenAPI documentation at `http://localhost:3000/api/docs`.
   - Implemented live health check endpoint `GET /api/health`.
-  - Pushed all frontend and backend commits to GitHub.
+- Completed Phase 5 (PostgreSQL & Relational Database Design):
+  - Mastered relational fundamentals: Primary/Foreign Keys, 1:1, 1:N, N:M join tables, audit logs, indexes, constraints.
+  - Designed full ER diagram with 9 core business entities (`User`, `Role`, `Category`, `Supplier`, `Product`, `Inventory`, `StockMovement`, `Order`, `OrderItem`) in `docs/DATABASE.md`.
+  - Provisioned free PostgreSQL cloud database on Neon (`inventory-dev`, Singapore region).
+  - Configured stable Prisma 6.19.3 ORM in `backend/` with `backend/.env` secure database URL.
+  - Created and applied first database migration `20261020060218_init` to Neon.
+  - Authored and executed idempotent development seed script `backend/prisma/seed.ts` populating initial roles, admin user, categories, suppliers, test products, inventories, and audit logs.
 
 ## What I Learned
 
-- NestJS Dependency Injection: Controllers declare their service dependencies in their constructor, and NestJS automatically instantiates and injects them.
-- Global Prefix `/api` guarantees all endpoints align with Nginx reverse proxy routing.
-- CORS must be enabled when the frontend (`:5173`) and backend (`:3000`) run on different ports.
-- In VS Code, the letter `U` on tabs means "Untracked by Git", not unsaved.
-- Swagger provides self-documenting, interactive API exploration and testing out-of-the-box.
+- Relational Integrity: Using Foreign Keys with `ON DELETE CASCADE` vs `RESTRICT` protects against orphaned data.
+- 1:1 Product-to-Inventory isolation: Keeps commercial catalog data clean while tracking quantity and threshold alerts separately.
+- Historical Price Snapshotting: `OrderItem.unitPrice` captures the price at the moment of checkout, preventing future product price changes from retroactively altering accounting records.
+- Prisma Migrations: `prisma migrate dev` version-controls database schema in SQL DDL files, guaranteeing reproducible database states across dev and production.
+- Database Seeding: `prisma db seed` using `upsert` allows safe, repeatable populating of test and development data.
 
 ## Current Problems
 
-None. All systems operational.
+None. All 9 tables migrated and seeded on Neon PostgreSQL.
 
 ## Next Task (When Resuming)
 
-1. Begin Phase 5 — PostgreSQL:
-   - Learn relational database fundamentals (tables, primary keys, foreign keys, relationships, constraints, indexes).
-   - Design the Entity-Relationship (ER) diagram for:
-     1. User & Role (RBAC)
-     2. Product & Category
-     3. Supplier & Product relationship
-     4. Inventory & StockMovement (audit log)
-     5. Order & OrderItem
-   - Document the ER diagram in `docs/DATABASE.md`.
-   - Set up PostgreSQL and initialize Prisma schema.
+1. Begin Phase 6 — Connect Backend to Database:
+   - Create a dedicated `PrismaModule` and `PrismaService` in NestJS implementing `OnModuleInit` and `OnModuleDestroy`.
+   - Scaffold the `ProductsModule` (`products.controller.ts`, `products.service.ts`, DTOs with `class-validator`).
+   - Implement `GET /api/products` querying Neon through Prisma.
+   - Test live endpoints using Swagger UI at `http://localhost:3000/api/docs`.
 
 ## Instructions For Next AI Session
 

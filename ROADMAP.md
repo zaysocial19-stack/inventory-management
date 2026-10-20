@@ -50,26 +50,26 @@
 
 ## Phase 4 — Backend Foundation
 
-- [ ] Create NestJS project
-- [ ] Understand modules
-- [ ] Understand controllers
-- [ ] Understand services
-- [ ] Understand dependency injection
-- [ ] Create `/api/health`
-- [ ] Add validation
-- [ ] Configure API structure
-- [ ] Add Swagger/OpenAPI
+- [x] Create NestJS project
+- [x] Understand modules
+- [x] Understand controllers
+- [x] Understand services
+- [x] Understand dependency injection
+- [x] Create `/api/health`
+- [x] Add validation
+- [x] Configure API structure
+- [x] Add Swagger/OpenAPI
 
 ## Phase 5 — PostgreSQL
 
-- [ ] Install/configure PostgreSQL for development
-- [ ] Learn relational database concepts
-- [ ] Design entities
-- [ ] Create ER diagram
-- [ ] Configure Prisma
-- [ ] Create initial schema
-- [ ] Run migrations
-- [ ] Seed development data
+- [x] Install/configure PostgreSQL for development
+- [x] Learn relational database concepts
+- [x] Design entities
+- [x] Create ER diagram
+- [x] Configure Prisma
+- [x] Create initial schema
+- [x] Run migrations
+- [x] Seed development data
 
 ## Phase 6 — Connect Backend to Database
 
