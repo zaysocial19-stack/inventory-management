@@ -73,16 +73,16 @@
 
 ## Phase 6 — Connect Backend to Database
 
-- [ ] Connect NestJS to Prisma
-- [ ] Implement Products module
-- [ ] GET products
-- [ ] GET product by ID
-- [ ] POST product
-- [ ] PATCH product
-- [ ] DELETE product
-- [ ] Validation
-- [ ] Error handling
-- [ ] Database constraints
+- [x] Connect NestJS to Prisma
+- [x] Implement Products module
+- [x] GET products
+- [x] GET product by ID
+- [x] POST product
+- [x] PATCH product
+- [x] DELETE product
+- [x] Validation
+- [x] Error handling
+- [x] Database constraints
 
 ## Phase 7 — Authentication
 

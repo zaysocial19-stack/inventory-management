@@ -6,62 +6,53 @@ Update it at the end of meaningful sessions.
 
 ## Date
 
-2026-10-20
+2026-10-25
 
 ## Current Phase
 
-Phase 5 COMPLETE ➔ Moving to Phase 6 — Connect Backend to Database
+Phase 6 COMPLETE ➔ Moving to Phase 7 — Authentication & JWT / RBAC
 
 ## Current Task
 
-Completed Phase 5 PostgreSQL and Prisma setup. Ready to begin Phase 6: create Prisma module/service in NestJS and implement Products CRUD.
+Phase 6 completed. Full Products CRUD (`GET`, `GET :id`, `POST`, `PATCH`, `DELETE`) implemented with transactional 1:1 inventory creation, audit logs, DTO validation, and ledger protection against deleting ordered products.
 
 ## Completed This Session
 
 - Mastered Phase 0: System architecture, request flows, transaction atomicity, client vs. server boundaries.
 - Completed Phase 1: Verified Node.js (v24.15), npm (11.12), Git (v2.53).
 - Completed Phase 2: Git repository initialized, `.gitignore` created, root commit pushed to GitHub.
-- Completed Phase 3 (Frontend Foundation):
-  - Scaffolded React + TypeScript + Vite project in `frontend/`.
-  - Configured Tailwind CSS v4 with `@tailwindcss/vite`.
-  - Built typed `<ProductCard />` component with derived low-stock alerts.
-  - Implemented `<AddProductModal />` with controlled inputs, validation, and `e.preventDefault()`.
-  - Implemented multi-page routing with `react-router-dom` (`/`, `/products`, `/inventory`, `/orders`).
-  - Created `DashboardPage` with calculated metrics and restock alerts.
-- Completed Phase 4 (Backend Foundation):
-  - Scaffolded NestJS application in `backend/` with CommonJS and strict TypeScript.
-  - Mastered NestJS architecture: Modules, Controllers, Services, Dependency Injection.
-  - Configured global prefix `/api` and CORS for `http://localhost:5173`.
-  - Configured global `ValidationPipe` with payload whitelisting.
-  - Implemented interactive Swagger/OpenAPI documentation at `http://localhost:3000/api/docs`.
-  - Implemented live health check endpoint `GET /api/health`.
-- Completed Phase 5 (PostgreSQL & Relational Database Design):
-  - Mastered relational fundamentals: Primary/Foreign Keys, 1:1, 1:N, N:M join tables, audit logs, indexes, constraints.
-  - Designed full ER diagram with 9 core business entities (`User`, `Role`, `Category`, `Supplier`, `Product`, `Inventory`, `StockMovement`, `Order`, `OrderItem`) in `docs/DATABASE.md`.
-  - Provisioned free PostgreSQL cloud database on Neon (`inventory-dev`, Singapore region).
-  - Configured stable Prisma 6.19.3 ORM in `backend/` with `backend/.env` secure database URL.
-  - Created and applied first database migration `20261020060218_init` to Neon.
-  - Authored and executed idempotent development seed script `backend/prisma/seed.ts` populating initial roles, admin user, categories, suppliers, test products, inventories, and audit logs.
+- Completed Phase 3 (Frontend Foundation): React + Vite + Tailwind CSS v4, ProductCard, AddProductModal, react-router-dom multi-page routing.
+- Completed Phase 4 (Backend Foundation): NestJS CommonJS scaffold, `/api` prefix, CORS, Swagger docs, live `/api/health`.
+- Completed Phase 5 (PostgreSQL & Database Design): 9 entities modeled, Neon cloud DB provisioned, Prisma migrations & seed applied.
+- Completed Phase 6 (Connect Backend to Database):
+  - Built centralized `PrismaService` implementing `OnModuleInit` and `OnModuleDestroy` lifecycle hooks to manage connection pooling cleanly.
+  - Exported via `@Global()` `PrismaModule`.
+  - Built `ProductsModule`:
+    - `GET /api/products`: returns products with related `category`, `supplier`, and live `inventory`.
+    - `GET /api/products/:id`: returns single product with relations or `404 Not Found`.
+    - `POST /api/products`: validates with `CreateProductDto`, checks SKU uniqueness (`409 Conflict`), atomically creates `Product` + 1:1 `Inventory` + `StockMovement` audit record using `prisma.$transaction`.
+    - `PATCH /api/products/:id`: updates product and/or `minStockThreshold` using `UpdateProductDto` with `PartialType`.
+    - `DELETE /api/products/:id`: deletes product with enterprise ledger protection (rejects deletion with `409 Conflict` if product is referenced in historical customer orders).
+  - All endpoints documented and verified live in Swagger UI at `http://localhost:3000/api/docs`.
 
 ## What I Learned
 
-- Relational Integrity: Using Foreign Keys with `ON DELETE CASCADE` vs `RESTRICT` protects against orphaned data.
-- 1:1 Product-to-Inventory isolation: Keeps commercial catalog data clean while tracking quantity and threshold alerts separately.
-- Historical Price Snapshotting: `OrderItem.unitPrice` captures the price at the moment of checkout, preventing future product price changes from retroactively altering accounting records.
-- Prisma Migrations: `prisma migrate dev` version-controls database schema in SQL DDL files, guaranteeing reproducible database states across dev and production.
-- Database Seeding: `prisma db seed` using `upsert` allows safe, repeatable populating of test and development data.
+- Global NestJS Modules: Adding `@Global()` to `PrismaModule` allows any feature module to inject `PrismaService` without manual imports in every module file.
+- ACID Atomic Transactions: `prisma.$transaction(async (tx) => ...)` guarantees multi-table operations (Product + Inventory + Audit Log) succeed together or rollback completely.
+- DTO Inheritance: `@nestjs/swagger`'s `PartialType(CreateProductDto)` makes all fields optional for updates while preserving validation and documentation automatically.
+- Financial Ledger Integrity: Protecting historical data by rejecting deletes on products that appear on past receipts is essential for real-world accounting.
 
 ## Current Problems
 
-None. All 9 tables migrated and seeded on Neon PostgreSQL.
+None. All systems operational.
 
 ## Next Task (When Resuming)
 
-1. Begin Phase 6 — Connect Backend to Database:
-   - Create a dedicated `PrismaModule` and `PrismaService` in NestJS implementing `OnModuleInit` and `OnModuleDestroy`.
-   - Scaffold the `ProductsModule` (`products.controller.ts`, `products.service.ts`, DTOs with `class-validator`).
-   - Implement `GET /api/products` querying Neon through Prisma.
-   - Test live endpoints using Swagger UI at `http://localhost:3000/api/docs`.
+1. Begin Phase 7 — Authentication & JWT / RBAC:
+   - Install `bcrypt` and `@nestjs/jwt`, `@nestjs/passport`, `passport-jwt`.
+   - Build `AuthModule` (`auth.service.ts`, `auth.controller.ts`, `jwt.strategy.ts`).
+   - Implement `POST /api/auth/register` and `POST /api/auth/login`.
+   - Protect endpoints with `JwtAuthGuard` and `RolesGuard` (`@Roles('ADMIN')`).
 
 ## Instructions For Next AI Session
 
