@@ -86,21 +86,21 @@
 
 ## Phase 7 — Authentication
 
-- [ ] User registration
-- [ ] Password hashing
-- [ ] Login
-- [ ] Authentication state
-- [ ] Protected endpoints
-- [ ] Logout
-- [ ] Secure credential handling
+- [x] User registration
+- [x] Password hashing
+- [x] Login
+- [x] Authentication state
+- [x] Protected endpoints
+- [x] Logout
+- [x] Secure credential handling
 
 ## Phase 8 — Authorization
 
-- [ ] Define Admin role
-- [ ] Define Manager role
-- [ ] Define Staff role
-- [ ] Implement RBAC
-- [ ] Protect backend operations
+- [x] Define Admin role
+- [x] Define Manager role
+- [x] Define Staff role
+- [x] Implement RBAC
+- [x] Protect backend operations
 - [ ] Protect frontend routes/UI appropriately
 
 ## Phase 9 — Inventory

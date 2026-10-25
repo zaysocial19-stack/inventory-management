@@ -29,7 +29,7 @@ async function bootstrap() {
     .setTitle('Inventory & Order Management API')
     .setDescription('Production REST API documentation for store inventory and orders')
     .setVersion('1.0')
-    .addTag('System')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
