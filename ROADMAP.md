@@ -105,14 +105,14 @@
 
 ## Phase 9 — Inventory
 
-- [ ] Inventory model
-- [ ] Stock quantity
-- [ ] Stock movement model
-- [ ] Stock receiving
-- [ ] Stock reduction
-- [ ] Stock history
-- [ ] Low-stock threshold
-- [ ] Transaction-safe inventory updates
+- [x] Inventory model
+- [x] Stock quantity
+- [x] Stock movement model
+- [x] Stock receiving
+- [x] Stock reduction
+- [x] Stock history
+- [x] Low-stock threshold
+- [x] Transaction-safe inventory updates
 
 ## Phase 10 — Orders
 

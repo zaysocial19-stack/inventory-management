@@ -6,15 +6,15 @@ Update it at the end of meaningful sessions.
 
 ## Date
 
-2026-10-25
+2026-10-28
 
 ## Current Phase
 
-Phase 7 COMPLETE ➔ Moving to Phase 8/9 (RBAC on Frontend & Inventory Module)
+Phase 9 COMPLETE ➔ Moving to Phase 10 — Orders & Checkout Transactions
 
 ## Current Task
 
-Phase 7 completed. User registration with bcrypt hashing, JWT issuance and Passport Bearer authentication, and Role-Based Access Control (@Roles('ADMIN', 'MANAGER'), RolesGuard) implemented and verified live.
+Phase 9 completed. Full Inventory Engine implemented: low-stock filtering (`GET /api/inventory/low-stock`), atomic shipment receiving (`POST /api/inventory/receive`), stock adjustments with mandatory audit reasons (`POST /api/inventory/adjust`), and immutable movement auditing (`GET /api/inventory/movements`) with role-based security.
 
 ## Completed This Session
 
@@ -25,25 +25,23 @@ Phase 7 completed. User registration with bcrypt hashing, JWT issuance and Passp
 - Completed Phase 4 (Backend Foundation): NestJS CommonJS scaffold, `/api` prefix, CORS, Swagger docs, live `/api/health`.
 - Completed Phase 5 (PostgreSQL & Database Design): 9 entities modeled, Neon cloud DB provisioned, Prisma migrations & seed applied.
 - Completed Phase 6 (Connect Backend to Database): Built centralized `PrismaService`, `ProductsModule` with full CRUD, transactions, DTOs, and historical ledger protection.
-- Completed Phase 7 (Authentication & Role-Based Access Control):
-  - Configured `@nestjs/jwt`, `@nestjs/passport`, `passport-jwt`, and `bcrypt`.
-  - Implemented `AuthService` with salted password hashing (10 rounds) and JWT token emission (`accessToken`).
-  - Implemented `JwtStrategy` and `JwtAuthGuard` extracting and verifying Bearer tokens.
-  - Implemented `@Roles(...)` metadata decorator and `RolesGuard` evaluating user role permissions against endpoints.
-  - Protected `ProductsController`:
-    - `GET /api/products`: any authenticated user (`STAFF`, `MANAGER`, `ADMIN`).
-    - `POST` & `PATCH`: restricted to `ADMIN` and `MANAGER`.
-    - `DELETE`: strictly restricted to `ADMIN`.
-  - Verified live in Swagger: `STAFF` user allowed to read products, but blocked with `403 Forbidden` when attempting to delete products.
+- Completed Phase 7 (Authentication & Role-Based Access Control): JWT emission, bcrypt hashing, Passport Bearer strategy, `@Roles(...)` metadata & `RolesGuard`.
+- Completed Phase 9 (Inventory & Stock Movements):
+  - Created `ReceiveStockDto` and `AdjustStockDto` with validation.
+  - Implemented `InventoryService`:
+    - `findAll()`: maps inventory with dynamic `isLowStock` indicator.
+    - `findLowStock()`: filters urgent reorders (`stockQuantity <= minStockThreshold`).
+    - `receiveStock()`: atomic transaction (+quantity & movement log with user attribution).
+    - `adjustStock()`: atomic adjustments (`OUT`, `ADJUSTMENT`, `RETURN`) with negative-stock prevention and mandatory audit reasons.
+    - `getMovements()`: historical audit log restricted to `ADMIN` and `MANAGER`.
+  - Created `InventoryController` and registered `InventoryModule`.
+  - Tested live in Swagger: verified low-stock filtering, stock intake updating counts from 4 -> 24 and flipping `isLowStock: false`, and `STAFF` blocked from viewing audit movements (`403 Forbidden`).
 
 ## What I Learned
 
-- Stateless JWT: By eliminating server-side session DB queries, the backend verifies tokens in CPU memory in microseconds, preventing database lag.
-- Defense-in-Depth Hashing: `bcrypt.hash(password, 10)` generates a salted, one-way hash preventing rainbow table attacks.
-- Guard Chaining: Combining `@UseGuards(JwtAuthGuard, RolesGuard)` first verifies who the user is, then enforces what they are allowed to do.
-- 401 Unauthorized vs 403 Forbidden:
-  - `401 Unauthorized`: "I don't know who you are" (no token or invalid token).
-  - `403 Forbidden`: "I know who you are, but you don't have permission for this resource" (e.g. `STAFF` trying to execute an `ADMIN` delete).
+- Atomic Stock Management: Updating physical inventory and recording movement audit logs inside `prisma.$transaction` eliminates inventory shrinkage discrepancies.
+- Dynamic Computed Fields: Computing `isLowStock: stockQuantity <= minStockThreshold` on the fly provides instant UI status without database denormalization.
+- RBAC Least-Privilege Principle: Staff can receive shipments and check stock, but cannot write off waste or inspect audit history without Manager/Admin privileges.
 
 ## Current Problems
 
@@ -51,12 +49,16 @@ None. All systems operational.
 
 ## Next Task (When Resuming)
 
-1. Connect Frontend to Live Authenticated Backend:
-   - Build a Login / Auth form in React.
-   - Store JWT in memory / state.
-   - Attach `Authorization: Bearer <token>` to Axios / fetch requests.
-   - Conditionally show/hide Admin actions based on user role.
-2. Or proceed to Phase 9 (Dedicated Inventory & Stock Movement API endpoints).
+1. Begin Phase 10 — Orders & Checkout Transactions:
+   - Create `OrdersModule`, `OrdersService`, `OrdersController`.
+   - Implement `CreateOrderDto` (`items: [{ productId, quantity }]`).
+   - Implement transactional order placement:
+     1. Verify product availability & prevent overselling.
+     2. Deduct physical stock from inventory.
+     3. Log `OUT` movement in `stock_movements`.
+     4. Snapshot current `unitPrice` in `order_items`.
+     5. Generate unique `orderNumber` and order record.
+   - Test full transactional purchase flow in Swagger.
 
 ## Instructions For Next AI Session
 
