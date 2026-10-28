@@ -6,6 +6,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { OrdersPage } from './pages/OrdersPage';
+import { SuppliersPage } from './pages/SuppliersPage';
 
 // Configure global query caching defaults
 const queryClient = new QueryClient({
@@ -28,6 +29,7 @@ export default function App() {
               <Route path="products" element={<ProductsPage />} />
               <Route path="inventory" element={<InventoryPage />} />
               <Route path="orders" element={<OrdersPage />} />
+              <Route path="suppliers" element={<SuppliersPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

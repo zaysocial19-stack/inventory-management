@@ -116,38 +116,38 @@
 
 ## Phase 10 — Orders
 
-- [ ] Order model
-- [ ] Order item model
-- [ ] Create order
-- [ ] Calculate totals
-- [ ] Order status
-- [ ] Order history
-- [ ] Connect orders to inventory
+- [x] Order model
+- [x] Order item model
+- [x] Create order
+- [x] Calculate totals
+- [x] Order status
+- [x] Order history
+- [x] Connect orders to inventory
 
 ## Phase 11 — Frontend/API Integration
 
-- [ ] Create API client
-- [ ] Connect authentication
-- [ ] Connect products
-- [ ] Connect inventory
-- [ ] Connect orders
-- [ ] TanStack Query
-- [ ] Loading states
-- [ ] Error states
-- [ ] Cache invalidation
+- [x] Create API client
+- [x] Connect authentication
+- [x] Connect products
+- [x] Connect inventory
+- [x] Connect orders
+- [x] TanStack Query
+- [x] Loading states
+- [x] Error states
+- [x] Cache invalidation
 
 ## Phase 12 — Professional UI
 
 - [ ] Login
-- [ ] Dashboard
-- [ ] Products
-- [ ] Inventory
-- [ ] Suppliers
+- [x] Dashboard
+- [x] Products
+- [x] Inventory
+- [x] Suppliers
 - [ ] Orders
 - [ ] Users
 - [ ] Reports
 - [ ] Responsive layout
-- [ ] Reusable components
+- [x] Reusable components
 
 ## Phase 13 — Search / Filtering / Pagination
 

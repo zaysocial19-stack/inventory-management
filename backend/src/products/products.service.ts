@@ -27,6 +27,20 @@ export class ProductsService {
     });
   }
 
+  // Fetch all product categories
+  async getCategories() {
+    return this.prisma.category.findMany({
+      orderBy: { name: 'asc' },
+    });
+  }
+
+  // Fetch all suppliers
+  async getSuppliers() {
+    return this.prisma.supplier.findMany({
+      orderBy: { name: 'asc' },
+    });
+  }
+
   // 2. Fetch a single product by ID
   async findOne(id: string) {
     const product = await this.prisma.product.findUnique({

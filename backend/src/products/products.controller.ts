@@ -33,6 +33,20 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Get('meta/categories')
+  @ApiOperation({ summary: 'Retrieve all product categories' })
+  @ApiResponse({ status: 200, description: 'List of categories' })
+  async getCategories() {
+    return this.productsService.getCategories();
+  }
+
+  @Get('meta/suppliers')
+  @ApiOperation({ summary: 'Retrieve all suppliers' })
+  @ApiResponse({ status: 200, description: 'List of suppliers' })
+  async getSuppliers() {
+    return this.productsService.getSuppliers();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve a single product by ID' })
   @ApiResponse({ status: 200, description: 'Product details' })

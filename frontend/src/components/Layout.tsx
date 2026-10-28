@@ -7,12 +7,14 @@ export function Layout() {
   const { user, isAuthenticated, logout } = useAuth();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const navItems = [
+    const navItems = [
     { label: 'Dashboard', path: '/' },
     { label: 'Products', path: '/products' },
     { label: 'Inventory', path: '/inventory' },
+    { label: 'Suppliers', path: '/suppliers' },
     { label: 'Orders', path: '/orders' },
   ];
+
 
   const getRoleBadge = (role: string) => {
     switch (role) {
