@@ -1,12 +1,31 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { useState } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { LoginModal } from './LoginModal';
 
 export function Layout() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   const navItems = [
     { label: 'Dashboard', path: '/' },
     { label: 'Products', path: '/products' },
     { label: 'Inventory', path: '/inventory' },
     { label: 'Orders', path: '/orders' },
-  ]
+  ];
+
+  const getRoleBadge = (role: string) => {
+    switch (role) {
+      case 'ADMIN':
+        return 'bg-rose-950 text-rose-300 border-rose-800/80';
+      case 'MANAGER':
+        return 'bg-emerald-950 text-emerald-300 border-emerald-800/80';
+      case 'STAFF':
+        return 'bg-amber-950 text-amber-300 border-amber-800/80';
+      default:
+        return 'bg-slate-800 text-slate-300 border-slate-700';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 p-6 md:p-10">
@@ -20,10 +39,45 @@ export function Layout() {
               Store Administration & Real-Time Tracking
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950 text-emerald-400 border border-emerald-800/60">
-              System Online
-            </span>
+
+          <div className="flex items-center gap-3">
+            {isAuthenticated && user ? (
+              <div className="flex items-center gap-3 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-lg">
+                <div className="flex flex-col text-right">
+                  <span className="text-xs font-semibold text-white">{user.fullName}</span>
+                  <span className="text-[10px] text-slate-400">{user.email}</span>
+                </div>
+                {(() => {
+                  const roleName =
+                    typeof user.role === 'object' && user.role !== null
+                      ? user.role.name
+                      : String(user.role || '');
+                  return (
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold border uppercase tracking-wider ${getRoleBadge(
+                        roleName
+                      )}`}
+                    >
+                      {roleName}
+                    </span>
+                  );
+                })()}
+                <button
+                  onClick={logout}
+                  className="ml-2 text-xs text-slate-400 hover:text-rose-400 transition-colors cursor-pointer px-1 py-0.5 rounded hover:bg-slate-700"
+                  title="Sign Out"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="px-3.5 py-1.5 text-xs font-medium rounded-lg bg-sky-600 hover:bg-sky-500 text-white transition-colors cursor-pointer shadow-sm shadow-sky-950/40"
+              >
+                🔐 Sign In
+              </button>
+            )}
           </div>
         </header>
 
@@ -51,7 +105,12 @@ export function Layout() {
         <main>
           <Outlet />
         </main>
+
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
       </div>
     </div>
-  )
+  );
 }

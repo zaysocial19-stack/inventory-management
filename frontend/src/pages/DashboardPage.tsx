@@ -1,18 +1,31 @@
-import { Link } from 'react-router-dom'
-import { type Product } from '../components/ProductCard'
+import { Link } from 'react-router-dom';
+import { useProducts, useLowStock } from '../api/queries';
 
-interface DashboardPageProps {
-  products: Product[]
-}
+export function DashboardPage() {
+  const { data: products = [], isLoading: pLoading } = useProducts();
+  const { data: lowStockItems = [] } = useLowStock();
 
-export function DashboardPage({ products }: DashboardPageProps) {
-  const totalProducts = products.length
-  
-  // Calculate total inventory value: sum of (price * quantity) for all items
-  const totalValue = products.reduce((acc, p) => acc + p.price * p.stockQuantity, 0)
-  
-  // Find low stock items
-  const lowStockItems = products.filter((p) => p.stockQuantity <= p.minStockThreshold)
+  const totalProducts = products.length;
+
+  const totalValue = products.reduce((acc, p) => {
+    const price = typeof p.price === 'number' ? p.price : parseFloat(p.price) || 0;
+    const qty = p.inventory?.stockQuantity ?? 0;
+    return acc + price * qty;
+  }, 0);
+
+  const isInitialLoading = pLoading && products.length === 0;
+
+  if (isInitialLoading) {
+    return (
+      <div className="flex flex-col gap-8 animate-pulse">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-28 bg-slate-800/60 rounded-xl border border-slate-800" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8">
@@ -23,7 +36,7 @@ export function DashboardPage({ products }: DashboardPageProps) {
             Total Products
           </span>
           <div className="text-3xl font-bold text-white mt-2">{totalProducts}</div>
-          <p className="text-xs text-slate-400 mt-1">Active items in catalog</p>
+          <p className="text-xs text-slate-400 mt-1">Active items in PostgreSQL catalog</p>
         </div>
 
         <div className="p-5 rounded-xl bg-slate-800/80 border border-slate-700/80">
@@ -33,7 +46,7 @@ export function DashboardPage({ products }: DashboardPageProps) {
           <div className="text-3xl font-bold text-sky-400 mt-2">
             ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <p className="text-xs text-slate-400 mt-1">Retail value of stock on hand</p>
+          <p className="text-xs text-slate-400 mt-1">Live valuation of physical stock</p>
         </div>
 
         <div className="p-5 rounded-xl bg-slate-800/80 border border-slate-700/80">
@@ -51,12 +64,12 @@ export function DashboardPage({ products }: DashboardPageProps) {
       {lowStockItems.length > 0 && (
         <div className="p-5 rounded-xl bg-red-950/30 border border-red-900/60">
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-sm font-semibold text-red-300">Items Needing Restock</h3>
+            <h3 className="text-sm font-semibold text-red-300">Items Needing Urgent Restock</h3>
             <Link
-              to="/products"
+              to="/inventory"
               className="text-xs text-red-400 hover:text-red-300 underline font-medium"
             >
-              View in Products →
+              Go to Inventory →
             </Link>
           </div>
           <div className="flex flex-col gap-2">
@@ -65,7 +78,10 @@ export function DashboardPage({ products }: DashboardPageProps) {
                 key={item.id}
                 className="flex justify-between items-center py-2 px-3 rounded-lg bg-slate-900/60 text-xs"
               >
-                <span className="font-medium text-slate-200">{item.name}</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-slate-200">{item.product.name}</span>
+                  <span className="text-slate-500 font-mono text-[11px]">{item.product.sku}</span>
+                </div>
                 <span className="text-red-400 font-semibold">
                   {item.stockQuantity} left (min: {item.minStockThreshold})
                 </span>
@@ -75,5 +91,5 @@ export function DashboardPage({ products }: DashboardPageProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
